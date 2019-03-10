@@ -1,0 +1,220 @@
+{
+	"pufferd": {
+		"type": "srcds",
+		"display": "Rust OXID Server by root",
+		"install": {
+			"commands": [
+				{
+					"files": "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz",
+					"type": "download"
+				},
+				{
+					"target": "steamcmd",
+					"type": "mkdir"
+				},
+				{
+					"commands": [
+						"tar --no-same-owner -xzvf steamcmd_linux.tar.gz -C steamcmd",
+						"steamcmd/steamcmd.sh +login anonymous +force_install_dir ${rootdir} +app_update 258550 validate +quit"
+					],
+					"type": "command"
+				},
+				{
+					"files": "https://umod.org/games/rust/download",
+					"type": "download"
+				},
+				{
+					"commands": [
+						"unzip -o Oxide.Rust.zip"
+					],
+					"type": "command"
+				},
+				{
+					"source": "runds.sh",
+					"target": "runds.sh.bak",
+					"type": "move"
+				},
+				{
+					"type": "writefile",
+					"text": "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${rootdir}/RustDedicated_Data/Plugins/x86_64\nexec ./RustDedicated -batchmode -nographics \"$@\"",
+					"target": "runds.sh"
+				},
+				{
+					"target": "server/${ServerIdentity}/cfg",
+					"type": "mkdir"
+				},
+				{
+					"type": "writefile",
+					"text": "rcon.web \"1\"\nrcon.port ${rconport}\nrcon.ip 0.0.0.0\nrcon.password \"${rconpassword}\"\n",
+					"target": "server/${ServerIdentity}/cfg/server.cfg"
+				},
+				{
+					"type": "writefile",
+					"text": "ownerid ${steamid64} \"${steamname}\" \"${steamstatus}\"\n",
+					"target": "server/${ServerIdentity}/cfg/users.cfg"
+				}
+			]
+		},
+		"run": {
+			"stopCode": 2,
+			"pre": [
+				{
+					"commands": [
+						"steamcmd/steamcmd.sh +login anonymous +force_install_dir ${rootdir} +app_update 258550 +quit"
+					],
+					"type": "command"
+				}
+			],
+			"post": [],
+			"arguments": [
+				"runds.sh",
+				"+server.ip",
+				"${ip}",
+				"+server.port",
+				"${port}",
+				"+server.tickrate",
+				"${tickrate}",
+				"+server.hostname",
+				"\"${ServerName}\"",
+				"+server.description",
+				"\"${Description}\"",
+				"+server.url",
+				"\"${URL}\"",
+				"+server.identity",
+				"\"${ServerIdentity}\"",
+				"+server.seed",
+				"${ServerSeed}",
+				"+server.maxplayers",
+				"${MaxPlayers}",
+				"+server.worldsize",
+				"${WorldSize}",
+				"+server.saveinterval",
+				"${save}",
+				"-logfile 2>&1"
+			],
+			"program": "sh"
+		},
+		"environment": {
+			"type": "tty"
+		},
+		"data": {
+			"ip": {
+				"value": "0.0.0.0",
+				"required": true,
+				"desc": "Server IP",
+				"display": "IP",
+				"internal": false
+			},
+			"port": {
+				"value": "27015",
+				"required": true,
+				"desc": "Server Port",
+				"display": "Port",
+				"internal": false,
+				"type": "integer"
+			},
+			"steamid64": {
+				"value": "123456789876543212345",
+				"required": true,
+				"desc": "SteamID64 von dem Admin",
+				"display": "SteamID64 von dem Admin",
+				"internal": false,
+				"type": "integer"
+			},
+			"steamname": {
+				"value": "Steam Name",
+				"required": true,
+				"desc": "Steam Name eintragen",
+				"display": "Steam Name eintragen",
+				"internal": false
+			},
+			"steamstatus": {
+				"value": "Owner",
+				"required": true,
+				"desc": "Steam Status auf Server",
+				"display": "Steam Status auf Server",
+				"internal": false
+			},
+			"rconport": {
+				"value": "28015",
+				"required": true,
+				"desc": "rCon Port",
+				"display": "rConPort",
+				"internal": false,
+				"type": "integer"
+			},
+			"rconpassword": {
+				"value": "MyPassword",
+				"required": true,
+				"desc": "rCon Passwort",
+				"display": "rCon Password",
+				"internal": false
+			},
+			"tickrate": {
+				"value": "10",
+				"required": true,
+				"desc": "Tickrate",
+				"display": "Tickrate",
+				"internal": false,
+				"type": "integer"
+			},
+			"ServerName": {
+				"value": "SKY-Servers RUST Public",
+				"required": true,
+				"desc": "Server Hostname",
+				"display": "Server Name",
+				"internal": false
+			},
+			"Description": {
+				"value": "SKY-Servers RUST Public Beschreibung",
+				"required": true,
+				"desc": "Server Beschreibung",
+				"display": "Server Beschreibung",
+				"internal": false
+			},
+			"URL": {
+				"value": "https://7ft.de",
+				"required": true,
+				"desc": "URL der Webseite",
+				"display": "Server Website",
+				"internal": false
+			},
+			"ServerIdentity": {
+				"value": "server1",
+				"required": true,
+				"desc": "Server Verzeichnis",
+				"display": "Server identity",
+				"internal": false
+			},
+			"ServerSeed": {
+				"value": "5555",
+				"required": true,
+				"desc": "Damit wird eine Map zufällig erstellt",
+				"display": "Server Seed",
+				"internal": false
+			},
+			"MaxPlayers": {
+				"value": "20",
+				"required": true,
+				"desc": "Wie viele Spieler können connecten.",
+				"display": "Max Players",
+				"internal": false
+			},
+			"WorldSize": {
+				"value": "3000",
+				"required": true,
+				"desc": "World size (number)",
+				"display": "World Size",
+				"internal": false
+			},
+			"save": {
+				"value": "120",
+				"required": true,
+				"desc": "Save interval",
+				"display": "Save Interval",
+				"internal": false,
+				"type": "integer"
+			}
+		}
+	}
+}
