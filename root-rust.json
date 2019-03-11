@@ -28,6 +28,20 @@
 					"type": "writefile",
 					"text": "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${rootdir}/RustDedicated_Data/Plugins/x86_64\nexec ./RustDedicated -batchmode -nographics \"$@\"",
 					"target": "runds.sh"
+				},
+				{
+					"target": "server/${ServerIdentity}/cfg",
+					"type": "mkdir"
+				},
+				{
+					"type": "writefile",
+					"text": "rcon.web \"1\"\nrcon.port ${rconport}\nrcon.ip ${ip}\nrcon.password \"${rconpassword}\"\n",
+					"target": "server/${ServerIdentity}/cfg/server.cfg"
+				},
+				{
+					"type": "writefile",
+					"text": "ownerid ${steamid64} \"${steamname}\" \"${steamstatus}\"\n",
+					"target": "server/${ServerIdentity}/cfg/users.cfg"
 				}
 			]
 		},
@@ -88,6 +102,43 @@
 				"display": "Port",
 				"internal": false,
 				"type": "integer"
+			},
+			"steamid64": {
+				"value": "123456789876543212345",
+				"required": true,
+				"desc": "SteamID64 find on https://steamid.io/",
+				"display": "SteamID64 for Admin",
+				"internal": false,
+				"type": "integer"
+			},
+			"steamname": {
+				"value": "Steam Name",
+				"required": true,
+				"desc": "Steam Name eintragen",
+				"display": "Steam Name eintragen",
+				"internal": false
+			},
+			"steamstatus": {
+				"value": "Owner",
+				"required": true,
+				"desc": "Steam Status auf Server",
+				"display": "Steam Status auf Server",
+				"internal": false
+			},
+			"rconport": {
+				"value": "28015",
+				"required": true,
+				"desc": "rCon Port",
+				"display": "rConPort",
+				"internal": false,
+				"type": "integer"
+			},
+			"rconpassword": {
+				"value": "MyPassword",
+				"required": true,
+				"desc": "rCon Passwort",
+				"display": "rCon Password",
+				"internal": false
 			},
 			"tickrate": {
 				"value": "10",
@@ -150,7 +201,7 @@
 				"value": "120",
 				"required": true,
 				"desc": "Save interval",
-				"display": "save",
+				"display": "Save Interval",
 				"internal": false,
 				"type": "integer"
 			}
