@@ -45,7 +45,7 @@
 				},
 				{
 					"type": "writefile",
-					"text": "rcon.web \"1\"\nrcon.port ${rconport}\nrcon.ip 0.0.0.0\nrcon.password \"${rconpassword}\"\n",
+					"text": "rcon.web \"1\"\nrcon.port ${rconport}\nrcon.ip ${ip}\nrcon.password \"${rconpassword}\"\n",
 					"target": "server/${ServerIdentity}/cfg/server.cfg"
 				},
 				{
@@ -116,7 +116,7 @@
 			"steamid64": {
 				"value": "123456789876543212345",
 				"required": true,
-				"desc": "SteamID64 von dem Admin",
+				"desc": "SteamID64 find on https://steamid.io/",
 				"display": "SteamID64 von dem Admin",
 				"internal": false,
 				"type": "integer"
